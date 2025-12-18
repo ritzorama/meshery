@@ -63,13 +63,13 @@ mesheryctl connection view [connection-name]
 		req, err := utils.NewRequest(http.MethodGet, url, nil)
 		if err != nil {
 			utils.Log.Error(err)
-			return nil
+			return err
 		}
 
 		resp, err := utils.MakeRequest(req)
 		if err != nil {
 			utils.Log.Error(err)
-			return nil
+			return err
 		}
 
 		// defers the closing of the response body after its use, ensuring that the resources are properly released.
@@ -78,14 +78,14 @@ mesheryctl connection view [connection-name]
 		data, err := io.ReadAll(resp.Body)
 		if err != nil {
 			utils.Log.Error(err)
-			return nil
+			return err
 		}
 
 		connectionsResponse := &connections.ConnectionPage{}
 		err = json.Unmarshal(data, connectionsResponse)
 		if err != nil {
 			utils.Log.Error(err)
-			return nil
+			return err
 		}
 
 		var selectedConnection *connections.Connection
@@ -153,11 +153,8 @@ mesheryctl connection view [connection-name]
 // selectConnectionPrompt lets user to select a connection if connections are more than one
 func selectConnectionPrompt(connectionsList []*connections.Connection) *connections.Connection {
 	connectionNames := []string{}
-	connectionArray := []*connections.Connection{}
 
-	connectionArray = append(connectionArray, connectionsList...)
-
-	for _, conn := range connectionArray {
+	for _, conn := range connectionsList {
 		connectionName := fmt.Sprintf("ID: %s, Name: %s, Type: %s", conn.ID.String(), conn.Name, conn.Type)
 		connectionNames = append(connectionNames, connectionName)
 	}
@@ -173,7 +170,7 @@ func selectConnectionPrompt(connectionsList []*connections.Connection) *connecti
 			continue
 		}
 
-		return connectionArray[i]
+		return connectionsList[i]
 	}
 }
 

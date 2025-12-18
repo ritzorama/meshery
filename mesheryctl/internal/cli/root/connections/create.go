@@ -235,7 +235,7 @@ func getContexts(configFile string) ([]string, error) {
 	mctlCfg, err := config.GetMesheryCtl(viper.GetViper())
 	if err != nil {
 		utils.Log.Error(err)
-		return nil, nil
+		return nil, err
 	}
 
 	// getContextsURL endpoint points to the URL returning the available contexts
@@ -250,6 +250,8 @@ func getContexts(configFile string) ([]string, error) {
 	if err != nil {
 		return nil, utils.ErrRequestResponse(err)
 	}
+	defer res.Body.Close()
+
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return nil, utils.ErrReadResponseBody(err)
@@ -282,7 +284,7 @@ func getContexts(configFile string) ([]string, error) {
 
 func setContext(configFile, cname string) error {
 	client := &http.Client{}
-	extraParams1 := map[string]string{
+	contextParams := map[string]string{
 		"contextName": cname,
 	}
 	mctlCfg, err := config.GetMesheryCtl(viper.GetViper())
@@ -291,9 +293,9 @@ func setContext(configFile, cname string) error {
 		return err
 	}
 
-	// SETCONTEXT endpoint points to set context
-	SETCONTEXT := mctlCfg.GetBaseMesheryURL() + "/api/system/kubernetes"
-	req, err := utils.UploadFileWithParams(SETCONTEXT, extraParams1, utils.ParamName, configFile)
+	// setContextURL endpoint points to set context
+	setContextURL := mctlCfg.GetBaseMesheryURL() + "/api/system/kubernetes"
+	req, err := utils.UploadFileWithParams(setContextURL, contextParams, utils.ParamName, configFile)
 	if err != nil {
 		return errors.Wrap(err, "failed to upload file with parameters")
 	}
@@ -301,6 +303,8 @@ func setContext(configFile, cname string) error {
 	if err != nil {
 		return utils.ErrRequestResponse(err)
 	}
+	defer res.Body.Close()
+
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return utils.ErrReadResponseBody(err)
@@ -331,6 +335,9 @@ func setToken() {
 		_, err = fmt.Scanf("%d", &choice)
 		if err != nil {
 			log.Fatalf("Error reading input:  %s", err.Error())
+		}
+		if choice < 1 || choice > len(contexts) {
+			log.Fatalf("Invalid choice: %d. Please select a number between 1 and %d.", choice, len(contexts))
 		}
 		chosenCtx = contexts[choice-1]
 	}
