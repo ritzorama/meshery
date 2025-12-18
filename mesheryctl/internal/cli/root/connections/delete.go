@@ -14,16 +14,15 @@ import (
 var deleteConnectionCmd = &cobra.Command{
 	Use:   "delete",
 	Short: "Delete a connection",
-	Long: `Delete
-a connection`,
+	Long:  `Delete a connection`,
 
 	Example: `
 // Delete a connection
-mesheryctl exp connections delete [connection_id]
+mesheryctl connection delete [connection_id]
 `,
 
 	Args: func(_ *cobra.Command, args []string) error {
-		const errMsg = "Usage: mesheryctl exp connections delete \nRun 'mesheryctl exp connections delete --help' to see detailed help message"
+		const errMsg = "Usage: mesheryctl connection delete \nRun 'mesheryctl connection delete --help' to see detailed help message"
 		if len(args) != 1 {
 			return utils.ErrInvalidArgument(errors.New(errMsg))
 		}

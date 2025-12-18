@@ -199,6 +199,21 @@ func RelationshipsError(msg string, cmd string) string {
 	}
 }
 
+func ConnectionSubError(msg string, cmd string) string {
+	switch cmd {
+	case "list":
+		return formatError(msg, cmdConnectionList)
+	case "view":
+		return formatError(msg, cmdConnectionView)
+	case "delete":
+		return formatError(msg, cmdConnectionDelete)
+	case "create":
+		return formatError(msg, cmdConnectionCreate)
+	default:
+		return formatError(msg, cmdConnection)
+	}
+}
+
 // MeshError returns a formatted error message with a link to 'mesh' command usage page in addition to the error message
 func MeshError(msg string) string {
 	return formatError(msg, cmdMesh)
@@ -359,6 +374,10 @@ func formatError(msg string, cmd cmdType) string {
 		return formatUsageDetails(msg, connectionDeleteURL)
 	case cmdConnectionList:
 		return formatUsageDetails(msg, connectionListURL)
+	case cmdConnectionView:
+		return formatUsageDetails(msg, connectionViewURL)
+	case cmdConnectionCreate:
+		return formatUsageDetails(msg, connectionCreateURL)
 	case cmdExpRelationship:
 		return formatUsageDetails(msg, expRelationshipUsageURL)
 	case cmdExpRelationshipGenerate:

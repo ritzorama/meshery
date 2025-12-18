@@ -20,14 +20,14 @@ var listConnectionsCmd = &cobra.Command{
 	Long:  `List all the connections`,
 	Example: `
 // List all the connections
-mesheryctl exp connections list
+mesheryctl connection list
 
 // List all the connections with page number
-mesheryctl exp connections list --page 2
+mesheryctl connection list --page 2
 `,
 
 	Args: func(_ *cobra.Command, args []string) error {
-		const errMsg = "Usage: mesheryctl exp connection list \nRun 'mesheryctl exp connection list --help' to see detailed help message"
+		const errMsg = "Usage: mesheryctl connection list \nRun 'mesheryctl connection list --help' to see detailed help message"
 		if len(args) != 0 {
 			return utils.ErrInvalidArgument(errors.New(errMsg))
 		}
