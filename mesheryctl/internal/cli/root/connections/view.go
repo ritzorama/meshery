@@ -109,7 +109,10 @@ mesheryctl connection view [connection-name]
 			return errors.New("output-format choice is invalid or not provided, use [json|yaml]")
 		}
 		// Get the home directory of the user to save the output file
-		homeDir, _ := os.UserHomeDir()
+		homeDir, err := os.UserHomeDir()
+		if err != nil {
+			return errors.Wrap(err, "failed to determine user home directory")
+		}
 		connectionString := strings.ReplaceAll(fmt.Sprintf("%v", selectedConnection.Name), " ", "_")
 
 		if outFormatFlag == "yaml" {
