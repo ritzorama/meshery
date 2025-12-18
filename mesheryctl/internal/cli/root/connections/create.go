@@ -238,10 +238,10 @@ func getContexts(configFile string) ([]string, error) {
 		return nil, nil
 	}
 
-	// GETCONTEXTS endpoint points to the URL return the contexts available
-	GETCONTEXTS := mctlCfg.GetBaseMesheryURL() + "/api/system/kubernetes/contexts"
+	// getContextsURL endpoint points to the URL returning the available contexts
+	getContextsURL := mctlCfg.GetBaseMesheryURL() + "/api/system/kubernetes/contexts"
 
-	req, err := utils.UploadFileWithParams(GETCONTEXTS, nil, utils.ParamName, configFile)
+	req, err := utils.UploadFileWithParams(getContextsURL, nil, utils.ParamName, configFile)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to upload file with parameters")
 	}
