@@ -56,10 +56,10 @@ mesheryctl connection view [connection-name]
 			return err
 		}
 
-		baseUrl := mctlCfg.GetBaseMesheryURL()
+		baseURL := mctlCfg.GetBaseMesheryURL()
 		connectionNameOrID := args[0]
 
-		url := fmt.Sprintf("%s/api/integrations/connections?search=%s&pagesize=all", baseUrl, connectionNameOrID)
+		url := fmt.Sprintf("%s/api/integrations/connections?search=%s&pagesize=all", baseURL, connectionNameOrID)
 		req, err := utils.NewRequest(http.MethodGet, url, nil)
 		if err != nil {
 			utils.Log.Error(err)
