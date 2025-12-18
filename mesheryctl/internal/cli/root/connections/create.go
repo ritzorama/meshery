@@ -320,7 +320,7 @@ func setToken() {
 	if contexts == nil || len(contexts) < 1 {
 		log.Fatalf("Error getting context: %s", fmt.Errorf("no contexts found"))
 	}
-	choosenCtx := contexts[0]
+	chosenCtx := contexts[0]
 	if len(contexts) > 1 {
 		fmt.Println("List of available contexts: ")
 		for i, ctx := range contexts {
@@ -332,11 +332,11 @@ func setToken() {
 		if err != nil {
 			log.Fatalf("Error reading input:  %s", err.Error())
 		}
-		choosenCtx = contexts[choice-1]
+		chosenCtx = contexts[choice-1]
 	}
 
-	log.Debugf("Chosen context : %s out of the %d available contexts", choosenCtx, len(contexts))
-	err = setContext(utils.ConfigPath, choosenCtx)
+	log.Debugf("Chosen context : %s out of the %d available contexts", chosenCtx, len(contexts))
+	err = setContext(utils.ConfigPath, chosenCtx)
 	if err != nil {
 		log.Fatalf("Error setting context: %s", err.Error())
 	}

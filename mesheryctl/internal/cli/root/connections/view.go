@@ -118,7 +118,7 @@ mesheryctl connection view [connection-name]
 			}
 			if saveFlag {
 				fmt.Println("Saving output as YAML file")
-				err = os.WriteFile(homeDir+"/.meshery/connection_"+connectionString+".yaml", output, 0666)
+				err = os.WriteFile(homeDir+"/.meshery/connection_"+connectionString+".yaml", output, 0644)
 				if err != nil {
 					return errors.Wrap(err, "failed to save output as YAML file")
 				}
@@ -126,14 +126,14 @@ mesheryctl connection view [connection-name]
 			} else {
 				fmt.Print(string(output))
 			}
-		} else if outFormatFlag == "json" {
+		} else {
 			if saveFlag {
 				fmt.Println("Saving output as JSON file")
 				output, err = json.MarshalIndent(selectedConnection, "", "  ")
 				if err != nil {
 					return errors.Wrap(err, "failed to format output in JSON")
 				}
-				err = os.WriteFile(homeDir+"/.meshery/connection_"+connectionString+".json", output, 0666)
+				err = os.WriteFile(homeDir+"/.meshery/connection_"+connectionString+".json", output, 0644)
 				if err != nil {
 					return errors.Wrap(err, "failed to save output as JSON file")
 				}
@@ -141,8 +141,6 @@ mesheryctl connection view [connection-name]
 				return nil
 			}
 			return outputConnectionJSON(selectedConnection)
-		} else {
-			return errors.New("output-format choice invalid, use [json|yaml]")
 		}
 
 		return nil
